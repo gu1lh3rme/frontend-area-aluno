@@ -8,7 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { DocumentService } from '../../core/services/document.service';
 import { Documento } from '../../models/document.model';
 
@@ -29,8 +29,7 @@ import { Documento } from '../../models/document.model';
     MatSnackBarModule,
     MatTooltipModule,
     MatChipsModule,
-    DatePipe,
-    DecimalPipe
+    DatePipe
   ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss'
