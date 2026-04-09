@@ -1,0 +1,77 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <mat-sidenav
+    #sidenav
+    [mode]="sidenavMode()"
+    [opened]="sidenavAberto()"
+    class="sidenav">
+
+    <!-- Logo e nome da plataforma -->
+    <div class="sidenav-header">
+      <mat-icon class="logo-icon">school</mat-icon>
+      <span class="logo-texto">Área do Aluno</span>
+    </div>
+
+    <!-- Informações do usuário -->
+    @if (usuario(); as user) {
+      <div class="usuario-info">
+        <mat-icon class="avatar-icon">account_circle</mat-icon>
+        <div class="usuario-detalhes">
+          <span class="usuario-nome">{{ user.nome || 'Aluno' }}</span>
+          <span class="usuario-email">{{ user.email }}</span>
+        </div>
+      </div>
+    }
+
+    <!-- Divisor -->
+    <mat-divider></mat-divider>
+
+    <!-- Menu de navegação -->
+    <mat-nav-list class="nav-list">
+      @for (item of menuItems; track item.rota) {
+        <a
+          mat-list-item
+          [routerLink]="item.rota"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: false }"
+          class="nav-item">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <!-- Rodapé da sidebar com botão de logout -->
+    <div class="sidenav-footer">
+      <mat-divider></mat-divider>
+      <button
+        mat-list-item
+        class="logout-btn"
+        (click)="sair()"
+        matTooltip="Sair da conta">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <!-- ===================== CONTEÚDO PRINCIPAL ===================== -->
+  <mat-sidenav-content class="main-content">
+
+    <!-- Toolbar mobile (hamburguer) -->
+    <mat-toolbar color="primary" class="mobile-toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Área do Aluno</span>
+    </mat-toolbar>
+
+    <!-- Área de conteúdo das rotas filhas -->
+    <div class="content-area fade-in">
+      <router-outlet />
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

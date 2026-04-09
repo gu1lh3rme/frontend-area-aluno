@@ -1,0 +1,163 @@
+<div class="documentos-container">
+
+  <!-- Cabeçalho da página -->
+  <div class="pagina-header">
+    <div>
+      <h1>Meus Documentos</h1>
+      <p>Envie PDFs e arquivos de texto para o assistente IA analisar.</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="inputArquivo.click()">
+      <mat-icon>upload_file</mat-icon>
+      Enviar Arquivo
+    </button>
+  </div>
+
+  <!-- Input de arquivo oculto -->
+  <input
+    #inputArquivo
+    type="file"
+    accept=".pdf,.txt,application/pdf,text/plain"
+    style="display: none"
+    (change)="onArquivoSelecionado($event)" />
+
+  <!-- Card de upload (exibido quando arquivo está selecionado) -->
+  @if (arquivoSelecionado(); as arquivo) {
+    <mat-card class="upload-card">
+      <mat-card-content>
+        <div class="upload-preview">
+          <mat-icon class="arquivo-icon">
+            {{ iconeArquivo(arquivo.type) }}
+          </mat-icon>
+          <div class="arquivo-info">
+            <span class="arquivo-nome">{{ arquivo.name }}</span>
+            <span class="arquivo-tamanho">{{ formatarTamanho(arquivo.size) }}</span>
+          </div>
+          <div class="upload-acoes">
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="enviando()"
+              (click)="enviarArquivo()">
+              @if (enviando()) {
+                <mat-spinner diameter="18"></mat-spinner>
+                Enviando...
+              } @else {
+                <ng-container>
+                  <mat-icon>cloud_upload</mat-icon>
+                  Confirmar Envio
+                </ng-container>
+              }
+            </button>
+            <button mat-stroked-button [disabled]="enviando()" (click)="cancelarSelecao()">
+              <mat-icon>close</mat-icon>
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+        @if (enviando()) {
+          <mat-progress-bar mode="indeterminate" class="progress-bar"></mat-progress-bar>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Estado de carregamento -->
+  @if (carregando()) {
+    <div class="carregando-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Carregando documentos...</p>
+    </div>
+  }
+
+  <!-- Lista de documentos -->
+  @if (!carregando()) {
+    @if (documentos().length === 0) {
+
+      <!-- Estado vazio -->
+      <mat-card class="estado-vazio">
+        <mat-card-content>
+          <mat-icon class="vazio-icon">folder_open</mat-icon>
+          <h3>Nenhum documento enviado ainda</h3>
+          <p>Envie seus PDFs ou arquivos de texto para começar a usar o assistente IA.</p>
+          <button mat-raised-button color="primary" (click)="inputArquivo.click()">
+            <mat-icon>upload_file</mat-icon>
+            Enviar Primeiro Documento
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+    } @else {
+
+      <!-- Tabela de documentos -->
+      <mat-card class="tabela-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>folder</mat-icon>
+            {{ documentos().length }} documento(s) encontrado(s)
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="tabela-container">
+            <table mat-table [dataSource]="documentos()" class="tabela-documentos">
+
+              <!-- Coluna: Nome -->
+              <ng-container matColumnDef="nome">
+                <th mat-header-cell *matHeaderCellDef>Nome</th>
+                <td mat-cell *matCellDef="let doc">
+                  <div class="doc-nome">
+                    <mat-icon class="doc-icon">{{ iconeArquivo(doc.tipo) }}</mat-icon>
+                    <span>{{ doc.nome }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Coluna: Tipo -->
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                <td mat-cell *matCellDef="let doc">
+                  <span class="tipo-badge">{{ doc.tipo }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Coluna: Tamanho -->
+              <ng-container matColumnDef="tamanho">
+                <th mat-header-cell *matHeaderCellDef>Tamanho</th>
+                <td mat-cell *matCellDef="let doc">{{ formatarTamanho(doc.tamanho) }}</td>
+              </ng-container>
+
+              <!-- Coluna: Data de envio -->
+              <ng-container matColumnDef="criado_em">
+                <th mat-header-cell *matHeaderCellDef>Enviado em</th>
+                <td mat-cell *matCellDef="let doc">
+                  {{ doc.criado_em | date: 'dd/MM/yyyy HH:mm' }}
+                </td>
+              </ng-container>
+
+              <!-- Coluna: Ações -->
+              <ng-container matColumnDef="acoes">
+                <th mat-header-cell *matHeaderCellDef>Ações</th>
+                <td mat-cell *matCellDef="let doc">
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deletarDocumento(doc)"
+                    matTooltip="Remover documento"
+                    aria-label="Remover documento">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+              <tr mat-row *matRowDef="let row; columns: colunas;" class="doc-row"></tr>
+
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    }
+  }
+
+</div>

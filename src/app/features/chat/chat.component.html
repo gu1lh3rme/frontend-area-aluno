@@ -1,0 +1,140 @@
+<div class="chat-container">
+
+  <!-- Cabeçalho do chat -->
+  <div class="chat-header">
+    <div class="chat-titulo">
+      <mat-icon class="chat-icon">smart_toy</mat-icon>
+      <div>
+        <h1>Assistente IA</h1>
+        <p>Converse com o assistente baseado nos seus documentos</p>
+      </div>
+    </div>
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="limparConversa()"
+      [disabled]="historico().length === 0"
+      matTooltip="Limpar conversa">
+      <mat-icon>delete_sweep</mat-icon>
+      Limpar
+    </button>
+  </div>
+
+  <!-- Área de mensagens -->
+  <div class="chat-mensagens" #mensagensContainer>
+
+    <!-- Estado inicial (sem mensagens) -->
+    @if (historico().length === 0 && !aguardandoResposta()) {
+      <div class="estado-inicial">
+        <mat-icon class="inicial-icon">forum</mat-icon>
+        <h3>Olá! Sou seu assistente de estudos.</h3>
+        <p>Faça perguntas sobre os documentos que você enviou. Vou responder com base no conteúdo deles!</p>
+
+        <!-- Sugestões de perguntas -->
+        <div class="sugestoes">
+          <p class="sugestoes-titulo">Sugestões para começar:</p>
+          <div class="sugestoes-grid">
+            <button
+              mat-stroked-button
+              class="sugestao-btn"
+              (click)="inputMensagem = 'Faça um resumo dos documentos que tenho disponíveis.'; enviarMensagem()">
+              📄 Resumir documentos
+            </button>
+            <button
+              mat-stroked-button
+              class="sugestao-btn"
+              (click)="inputMensagem = 'Quais são os principais tópicos dos meus documentos?'; enviarMensagem()">
+              📌 Principais tópicos
+            </button>
+            <button
+              mat-stroked-button
+              class="sugestao-btn"
+              (click)="inputMensagem = 'Crie 5 perguntas de revisão sobre o conteúdo.'; enviarMensagem()">
+              ❓ Perguntas de revisão
+            </button>
+            <button
+              mat-stroked-button
+              class="sugestao-btn"
+              (click)="inputMensagem = 'Explique os conceitos mais importantes de forma simples.'; enviarMensagem()">
+              💡 Explicar conceitos
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Lista de mensagens -->
+    @for (msg of historico(); track $index) {
+      <div class="mensagem-wrapper" [class.mensagem-usuario-wrapper]="isMensagemUsuario(msg)">
+
+        <!-- Avatar -->
+        <div class="avatar" [class.avatar-usuario]="isMensagemUsuario(msg)">
+          <mat-icon>{{ isMensagemUsuario(msg) ? 'person' : 'smart_toy' }}</mat-icon>
+        </div>
+
+        <!-- Balão da mensagem -->
+        <div class="mensagem-balao" [class.mensagem-usuario]="isMensagemUsuario(msg)">
+          <div class="mensagem-conteudo">{{ msg.content }}</div>
+          @if (msg.timestamp) {
+            <div class="mensagem-hora">
+              {{ msg.timestamp | date: 'HH:mm' }}
+            </div>
+          }
+        </div>
+
+      </div>
+    }
+
+    <!-- Indicador de digitação da IA -->
+    @if (aguardandoResposta()) {
+      <div class="mensagem-wrapper">
+        <div class="avatar">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div class="mensagem-balao digitando">
+          <div class="pontos-digitando">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span class="digitando-texto">Assistente está digitando...</span>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  <!-- Área de input -->
+  <div class="chat-input-area">
+    <mat-form-field appearance="outline" class="input-campo">
+      <textarea
+        matInput
+        [(ngModel)]="inputMensagem"
+        (keydown)="onKeyDown($event)"
+        placeholder="Digite sua pergunta... (Enter para enviar, Shift+Enter para nova linha)"
+        [disabled]="aguardandoResposta()"
+        rows="1"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="4"
+        aria-label="Campo de mensagem">
+      </textarea>
+    </mat-form-field>
+
+    <button
+      mat-fab
+      color="primary"
+      (click)="enviarMensagem()"
+      [disabled]="!inputMensagem.trim() || aguardandoResposta()"
+      matTooltip="Enviar mensagem"
+      aria-label="Enviar mensagem"
+      class="btn-enviar">
+      @if (aguardandoResposta()) {
+        <mat-spinner diameter="24" color="accent"></mat-spinner>
+      } @else {
+        <mat-icon>send</mat-icon>
+      }
+    </button>
+  </div>
+
+</div>
