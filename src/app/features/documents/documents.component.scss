@@ -1,0 +1,232 @@
+/* ============================================================
+   Estilos da página de documentos
+   ============================================================ */
+
+.documentos-container {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Cabeçalho da página */
+.pagina-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a237e;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Card de upload */
+.upload-card {
+  margin-bottom: 20px;
+  border-radius: 12px !important;
+  border: 2px dashed #3f51b5 !important;
+  background-color: #f3f5ff !important;
+}
+
+.upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .arquivo-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: #3f51b5;
+  }
+
+  .arquivo-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .arquivo-nome {
+      font-weight: 500;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .arquivo-tamanho {
+      font-size: 12px;
+      color: #888;
+    }
+  }
+
+  .upload-acoes {
+    display: flex;
+    gap: 8px;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+}
+
+.progress-bar {
+  margin-top: 12px;
+}
+
+/* Carregando */
+.carregando-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+  color: #666;
+}
+
+/* Estado vazio */
+.estado-vazio {
+  border-radius: 16px !important;
+  text-align: center;
+
+  mat-card-content {
+    padding: 48px 24px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .vazio-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #bbb;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #555;
+    }
+
+    p {
+      margin: 0;
+      color: #888;
+      font-size: 14px;
+      max-width: 350px;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+  }
+}
+
+/* Tabela */
+.tabela-card {
+  border-radius: 16px !important;
+
+  mat-card-header {
+    padding: 16px 16px 0;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      color: #333;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+    }
+  }
+}
+
+.tabela-container {
+  overflow-x: auto;
+}
+
+.tabela-documentos {
+  width: 100%;
+
+  th {
+    font-weight: 600;
+    color: #555;
+    font-size: 13px;
+  }
+
+  td {
+    font-size: 14px;
+    color: #333;
+  }
+}
+
+/* Linha de documento */
+.doc-row {
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f5f7ff;
+  }
+}
+
+/* Nome do documento com ícone */
+.doc-nome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .doc-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #3f51b5;
+  }
+}
+
+/* Badge do tipo de arquivo */
+.tipo-badge {
+  background-color: #e8eaf6;
+  color: #3f51b5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .documentos-container {
+    padding: 16px;
+  }
+
+  .pagina-header {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

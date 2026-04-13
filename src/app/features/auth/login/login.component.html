@@ -1,0 +1,96 @@
+<div class="login-container">
+
+  <!-- Card de login centralizado -->
+  <mat-card class="login-card">
+
+    <!-- Cabeçalho com logo -->
+    <div class="login-header">
+      <mat-icon class="logo-icon">school</mat-icon>
+      <h1 class="titulo">Área do Aluno</h1>
+      <p class="subtitulo">Acesse sua plataforma de estudos</p>
+    </div>
+
+    <mat-card-content>
+
+      <!-- Formulário de login -->
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Campo de e-mail -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>E-mail</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="seu@email.com"
+            autocomplete="email" />
+          <mat-icon matPrefix>email</mat-icon>
+          @if (f['email'].hasError('required') && f['email'].touched) {
+            <mat-error>E-mail é obrigatório.</mat-error>
+          }
+          @if (f['email'].hasError('email') && f['email'].touched) {
+            <mat-error>Informe um e-mail válido.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Campo de senha -->
+        <mat-form-field appearance="outline" class="campo-full">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            [type]="mostrarSenha() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password" />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="alternarSenha()"
+            [attr.aria-label]="mostrarSenha() ? 'Ocultar senha' : 'Mostrar senha'">
+            <mat-icon>{{ mostrarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (f['password'].hasError('required') && f['password'].touched) {
+            <mat-error>Senha é obrigatória.</mat-error>
+          }
+          @if (f['password'].hasError('minlength') && f['password'].touched) {
+            <mat-error>Mínimo de 6 caracteres.</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Botão de login -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="btn-entrar"
+          [disabled]="formulario.invalid || carregando()">
+
+          @if (carregando()) {
+            <mat-spinner diameter="20" class="spinner-inline"></mat-spinner>
+            Entrando...
+          } @else {
+            <ng-container>
+              <mat-icon>login</mat-icon>
+              Entrar
+            </ng-container>
+          }
+        </button>
+
+      </form>
+
+    </mat-card-content>
+
+    <!-- Rodapé do card -->
+    <mat-card-footer class="login-footer">
+      <p>
+        Não tem conta?
+        <a href="#" onclick="return false;">Cadastre-se</a>
+        (contate o suporte)
+      </p>
+    </mat-card-footer>
+
+  </mat-card>
+
+</div>

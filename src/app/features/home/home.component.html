@@ -1,0 +1,128 @@
+<div class="home-container">
+
+  <!-- Cabeçalho de boas-vindas -->
+  <div class="boas-vindas">
+    <div class="boas-vindas-texto">
+      <h1>{{ saudacao }}, {{ usuario?.nome || usuario?.email || 'Aluno' }}! 👋</h1>
+      <p>Bem-vindo à sua Área do Aluno. Continue seus estudos de onde parou.</p>
+    </div>
+    <div class="boas-vindas-data">
+      <mat-icon>calendar_today</mat-icon>
+      <span>{{ agora | date: 'EEEE, d \'de\' MMMM \'de\' y' : '' : 'pt-BR' }}</span>
+    </div>
+  </div>
+
+  <!-- Cards de resumo -->
+  @if (carregando()) {
+    <div class="carregando-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Carregando seus dados...</p>
+    </div>
+  } @else {
+    <div class="cards-resumo">
+
+      <!-- Card: Total de Documentos -->
+      <mat-card class="card-resumo card-documentos" routerLink="/documentos">
+        <mat-card-content>
+          <div class="card-icon-area">
+            <mat-icon class="card-icon">description</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-numero">{{ totalDocumentos() }}</span>
+            <span class="card-label">Documentos</span>
+            <span class="card-sublabel">enviados</span>
+          </div>
+        </mat-card-content>
+        <mat-card-footer class="card-footer">
+          <mat-icon>arrow_forward</mat-icon>
+          <span>Ver documentos</span>
+        </mat-card-footer>
+      </mat-card>
+
+      <!-- Card: Mensagens no chat -->
+      <mat-card class="card-resumo card-chat" routerLink="/chat">
+        <mat-card-content>
+          <div class="card-icon-area">
+            <mat-icon class="card-icon">smart_toy</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-numero">{{ historicoChat().length }}</span>
+            <span class="card-label">Mensagens</span>
+            <span class="card-sublabel">nesta sessão</span>
+          </div>
+        </mat-card-content>
+        <mat-card-footer class="card-footer">
+          <mat-icon>arrow_forward</mat-icon>
+          <span>Abrir chat</span>
+        </mat-card-footer>
+      </mat-card>
+
+      <!-- Card: Dica rápida -->
+      <mat-card class="card-resumo card-dica">
+        <mat-card-content>
+          <div class="card-icon-area">
+            <mat-icon class="card-icon">lightbulb</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Dica do dia</span>
+            <span class="card-sublabel">Envie seus PDFs e pergunte ao assistente!</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  }
+
+  <!-- Seção: Ações rápidas -->
+  <div class="acoes-rapidas">
+    <h2>Ações Rápidas</h2>
+    <div class="acoes-grid">
+
+      <button mat-raised-button color="primary" routerLink="/documentos">
+        <mat-icon>upload_file</mat-icon>
+        Enviar Documento
+      </button>
+
+      <button mat-raised-button color="accent" routerLink="/chat">
+        <mat-icon>chat</mat-icon>
+        Conversar com IA
+      </button>
+
+      <button mat-stroked-button routerLink="/documentos">
+        <mat-icon>folder_open</mat-icon>
+        Meus Arquivos
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Seção: Como funciona -->
+  <div class="como-funciona">
+    <h2>Como funciona</h2>
+    <div class="passos-grid">
+
+      <div class="passo">
+        <div class="passo-numero">1</div>
+        <mat-icon class="passo-icon">upload_file</mat-icon>
+        <h3>Envie seus documentos</h3>
+        <p>Faça upload de PDFs ou arquivos de texto com o conteúdo que deseja estudar.</p>
+      </div>
+
+      <div class="passo">
+        <div class="passo-numero">2</div>
+        <mat-icon class="passo-icon">psychology</mat-icon>
+        <h3>IA processa o conteúdo</h3>
+        <p>Nosso assistente analisa e indexa seus documentos automaticamente.</p>
+      </div>
+
+      <div class="passo">
+        <div class="passo-numero">3</div>
+        <mat-icon class="passo-icon">question_answer</mat-icon>
+        <h3>Faça suas perguntas</h3>
+        <p>Converse com a IA e ela responderá com base nos seus documentos.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
